@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionnaire de Doublons</title>
+    <link rel="icon" href="./images/icon.png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/papaparse/5.3.2/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Gestionnaire de Doublons</h1>
+            <p>Analysez et supprimez les doublons dans vos fichiers</p>
+        </div>
+
+        <div class="content">
+            <div class="upload-section" id="uploadSection">
+                <h2>📁 Charger un fichier</h2>
+                <p>Glissez-déposez votre fichier ou cliquez pour sélectionner</p>
+                
+                <div class="supported-formats">
+                    <div class="format-badge">TXT</div>
+                    <div class="format-badge">CSV</div>
+                    <div class="format-badge">EXCEL</div>
+                    <div class="format-badge">WORD</div>
+                    <div class="format-badge">SQL</div>
+                </div>
+
+                <input type="file" id="fileInput" class="file-input" accept=".txt,.csv,.xlsx,.xls,.docx,.sql">
+                <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                    Sélectionner un fichier
+                </button>
+                
+                <div id="fileInfo" class="file-info" style="display: none;">
+                    <strong>Fichier sélectionné:</strong> <span id="fileName"></span><br>
+                    <strong>Taille:</strong> <span id="fileSize"></span><br>
+                    <strong>Type:</strong> <span id="fileType"></span>
+                </div>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Analyse en cours...</p>
+            </div>
+
+            <div class="analysis-section" id="analysisSection">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3 id="totalItems">0</h3>
+                        <p>Total d'éléments</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="uniqueItems">0</h3>
+                        <p>Éléments uniques</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="duplicateGroups">0</h3>
+                        <p>Groupes de doublons</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="duplicateItems">0</h3>
+                        <p>Doublons totaux</p>
+                    </div>
+                </div>
+
+                <div class="duplicates-section">
+                    <h3>🔄 Doublons détectés</h3>
+                    
+                    <div class="stats-update">
+                        <span>État des doublons :</span>
+                        <span class="stat-badge active" id="activeDuplicatesCount">0 à supprimer</span>
+                        <span class="stat-badge cancelled" id="cancelledDuplicatesCount">0 annulés</span>
+                    </div>
+
+                    <div class="global-actions">
+                        <button class="btn btn-secondary" onclick="validateAllDuplicates()">
+                            ✅ Valider tout comme doublons
+                        </button>
+                        <button class="btn btn-secondary" onclick="cancelAllDuplicates()">
+                            ❌ Annuler tout comme doublons
+                        </button>
+                    </div>
+
+                    <div id="duplicatesList"></div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-danger" onclick="removeAllDuplicates()">
+                        🗑️ Supprimer les doublons validés
+                    </button>
+                    <button class="btn btn-success" onclick="downloadCleanedFile()">
+                        💾 Télécharger fichier nettoyé
+                    </button>
+                    <button class="btn btn-primary" onclick="showPreview()">
+                        👁️ Aperçu du résultat
+                    </button>
+                </div>
+
+                <div class="preview-section" id="previewSection" style="display: none;">
+                    <h3>📋 Aperçu du fichier nettoyé</h3>
+                    <div class="preview-content" id="previewContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
